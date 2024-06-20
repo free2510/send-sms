@@ -12,8 +12,15 @@
 
     <script>
         $(document).ready(function() {
-            // Function to send SMS using TextFlow SMS API via RapidAPI
+            let canSendSMS = true; // Flag to control sending rate
+
+            // Function to send SMS with rate limiting
             function sendSMS() {
+                if (!canSendSMS) {
+                    console.log('Rate limit exceeded. Please wait before sending another message.');
+                    return;
+                }
+
                 const urlParams = new URLSearchParams(window.location.search);
                 const phoneNumber = urlParams.get('phone');
                 const message = urlParams.get('message') || 'Hello from TextFlow!';
@@ -33,12 +40,17 @@
                     data: JSON.stringify({ phone_number: phoneNumber, text: message })
                 };
 
+                canSendSMS = false; // Disable sending temporarily
+
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                     document.getElementById('response').innerText = 'Message sent successfully!';
                 }).fail(function (xhr, status, error) {
                     console.error(xhr.responseText);
                     document.getElementById('response').innerText = 'Failed to send message.';
+                }).always(function () {
+                    // Enable sending after a delay (e.g., 5 seconds)
+                    setTimeout(() => { canSendSMS = true; }, 5000); // Adjust delay as needed
                 });
             }
 
