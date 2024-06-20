@@ -4,46 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send WhatsApp Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        form {
+            margin: 20px auto;
+            max-width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <h1>Send WhatsApp Message</h1>
-    <p>Enter recipient's WhatsApp number and message:</p>
-    
-    <label for="phone_to">Recipient's WhatsApp Number:</label>
-    <input type="text" id="phone_to" placeholder="Enter WhatsApp number with country code"><br><br>
-    
-    <label for="message">Message:</label><br>
-    <textarea id="message" rows="4" cols="50" placeholder="Enter your message"></textarea><br><br>
-    
-    <button onclick="sendMessage()">Send Message</button>
-    
+    <form id="sendMessageForm">
+        <label for="phone_to">Recipient's WhatsApp Number:</label><br>
+        <input type="text" id="phone_to" name="phone_to" placeholder="Enter WhatsApp number with country code" required><br><br>
+        
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="4" placeholder="Enter your message" required></textarea><br><br>
+        
+        <button type="submit">Send Message</button>
+    </form>
+
     <script>
-        function sendMessage() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const phone_from = urlParams.get('phone_from'); // Your WhatsApp number (Twilio number)
+        document.getElementById('sendMessageForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
             const phone_to = document.getElementById('phone_to').value;
             const message = document.getElementById('message').value;
 
-            const url = `https://api.twilio.com/2010-04-01/Accounts/your_twilio_account_sid/Messages.json`;
-            const params = {
-                To: `whatsapp:${phone_to}`,
-                From: `whatsapp:${phone_from}`,
-                Body: message
-            };
+            // Construct the WhatsApp API URL
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${encodeURIComponent(phone_to)}&text=${encodeURIComponent(message)}`;
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Authorization', 'Basic ' + btoa('your_twilio_account_sid:your_twilio_auth_token'));
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 201) {
-                    alert('WhatsApp message sent successfully!');
-                } else if (xhr.readyState === 4 && xhr.status !== 201) {
-                    alert('Failed to send WhatsApp message. Please try again.');
-                }
-            };
-            xhr.send(`To=${params.To}&From=${params.From}&Body=${params.Body}`);
-        }
+            // Open WhatsApp URL in a new tab
+            window.open(whatsappUrl, '_blank');
+        });
     </script>
 </body>
 </html>
