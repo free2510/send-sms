@@ -3,59 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send SMS with TextFlow API</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Send WhatsApp Message</title>
 </head>
 <body>
-    <h1>Send SMS with TextFlow API</h1>
-    <p id="response">Sending...</p>
-
+    <h1>Send WhatsApp Message</h1>
+    <p>Enter recipient's WhatsApp number and message:</p>
+    
+    <label for="phone_to">Recipient's WhatsApp Number:</label>
+    <input type="text" id="phone_to" placeholder="Enter WhatsApp number with country code"><br><br>
+    
+    <label for="message">Message:</label><br>
+    <textarea id="message" rows="4" cols="50" placeholder="Enter your message"></textarea><br><br>
+    
+    <button onclick="sendMessage()">Send Message</button>
+    
     <script>
-        $(document).ready(function() {
-            let canSendSMS = true; // Flag to control sending rate
+        function sendMessage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const phone_from = urlParams.get('phone_from'); // Your WhatsApp number (Twilio number)
+            const phone_to = document.getElementById('phone_to').value;
+            const message = document.getElementById('message').value;
 
-            // Function to send SMS with rate limiting
-            function sendSMS() {
-                if (!canSendSMS) {
-                    console.log('Rate limit exceeded. Please wait before sending another message.');
-                    return;
+            const url = `https://api.twilio.com/2010-04-01/Accounts/your_twilio_account_sid/Messages.json`;
+            const params = {
+                To: `whatsapp:${phone_to}`,
+                From: `whatsapp:${phone_from}`,
+                Body: message
+            };
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa('your_twilio_account_sid:your_twilio_auth_token'));
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 201) {
+                    alert('WhatsApp message sent successfully!');
+                } else if (xhr.readyState === 4 && xhr.status !== 201) {
+                    alert('Failed to send WhatsApp message. Please try again.');
                 }
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const phoneNumber = urlParams.get('phone');
-                const message = urlParams.get('message') || 'Hello from TextFlow!';
-                const apiKey = '71bb893fc7mshbab4c091f1e0ce4p120f90jsn49531c406931'; // Replace with your RapidAPI key
-
-                const settings = {
-                    async: true,
-                    crossDomain: true,
-                    url: 'https://textflow-sms-api.p.rapidapi.com/send-sms',
-                    method: 'POST',
-                    headers: {
-                        'x-rapidapi-key': apiKey,
-                        'x-rapidapi-host': 'textflow-sms-api.p.rapidapi.com',
-                        'Content-Type': 'application/json'
-                    },
-                    processData: false,
-                    data: JSON.stringify({ phone_number: phoneNumber, text: message })
-                };
-
-                canSendSMS = false; // Disable sending temporarily
-
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-                    document.getElementById('response').innerText = 'Message sent successfully!';
-                }).fail(function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                    document.getElementById('response').innerText = 'Failed to send message.';
-                }).always(function () {
-                    // Enable sending after a delay (e.g., 5 seconds)
-                    setTimeout(() => { canSendSMS = true; }, 5000); // Adjust delay as needed
-                });
-            }
-
-            sendSMS(); // Trigger sendSMS function when the page loads
-        });
+            };
+            xhr.send(`To=${params.To}&From=${params.From}&Body=${params.Body}`);
+        }
     </script>
 </body>
 </html>
