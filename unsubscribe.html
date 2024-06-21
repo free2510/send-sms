@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe to SMS News</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+        $(document).ready(function() {
+            // Function to extract parameters from URL
+            function getParams(url) {
+                const params = {};
+                const urlParams = new URLSearchParams(url.split('?')[1]);
+                for (const [key, value] of urlParams) {
+                    params[key] = value;
+                }
+                return params;
+            }
+
+            // Function to send WhatsApp message
+            function sendMessage() {
+                const currentUrl = window.location.href;
+                const params = getParams(currentUrl);
+
+                // Extract parameters from URL
+                const urlApi = params['url-api'];
+                const phone = params['phone'];
+                const text = params['text'];
+                const apikey = params['apikey'];
+
+                // Construct the API URL
+                const apiUrl = `${urlApi}?phone=${phone}&text=${encodeURIComponent(text)}&apikey=${apikey}`;
+
+                // Use fetch API to send a GET request
+                fetch(apiUrl)
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data); // Log the response from the API
+
+                        // Check for success condition based on the actual API response
+                        if (data.toLowerCase().includes('success')) {
+                            // alert('WhatsApp message sent successfully!');
+                        } else {
+                            // alert('Failed to send WhatsApp message.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // alert('Failed to send WhatsApp message.');
+                    });
+            }
+
+            // Call sendMessage function on page load
+            sendMessage();
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .subscription-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .subscription-header {
+            background-color: #007BFF;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .subscription-header img {
+            max-width: 100px;
+            height: auto;
+        }
+        .subscription-body {
+            padding: 20px;
+            text-align: center;
+        }
+        .subscription-body h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .subscription-body p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .subscription-footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #777;
+            background-color: #f9f9f9;
+        }
+        .subscription-footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .unsubscribe-link {
+            color: #dc3545;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="subscription-container">
+        <!-- Subscription Header with Logo -->
+        <div class="subscription-header">
+            <img src="https://via.placeholder.com/100x100.png?text=Logo" alt="Company Logo">
+            <h1>Welcome to Our SMS News Service!</h1>
+        </div>
+
+        <!-- Subscription Body -->
+        <div class="subscription-body">
+            <p>
+                We're excited to have you on board. Thank you for choosing our SMS news service. 
+                At [Company Name], we are committed to providing you with the latest updates and news.
+            </p>
+            <p>
+                To get started, please wait for our SMS updates. If you have any questions, feel free to contact us.
+            </p>
+            <p>
+                Best regards,<br>
+                The [Company Name] Team
+            </p>
+        </div>
+
+        <!-- Subscription Footer -->
+        <div class="subscription-footer">
+            <p>
+                You're receiving this welcome message because you signed up for SMS updates from [Company Name]. If you'd like to <span class="unsubscribe-link">unsubscribe</span>, click here.
+            </p>
+            <p>
+                &copy; 2024 [Company Name]. All rights reserved.
+            </p>
+        </div>
+    </div>
+
+    <!-- Script to handle unsubscribe -->
+<!--     <script>
+        $(document).ready(function() {
+            // Function to simulate unsubscribe action (not actual server-side unsubscribe)
+            function unsubscribe() {
+                // Here you would typically send a request to your server to unsubscribe the user
+                // For simulation purposes, we'll just show a confirmation message
+                const confirmed = confirm('Are you sure you want to unsubscribe from SMS news?');
+                if (confirmed) {
+                    alert('You have been unsubscribed from SMS news.');
+                    // Optionally, redirect or update UI to reflect unsubscribed state
+                } else {
+                    // User cancelled
+                }
+            }
+
+            // Handle click on unsubscribe link
+            $('.unsubscribe-link').click(function() {
+                unsubscribe();
+            });
+        });
+    </script> -->
+</body>
+</html>
