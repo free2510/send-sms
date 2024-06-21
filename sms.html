@@ -5,6 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscribe to SMS News</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to extract parameters from URL
+            function getParams(url) {
+                const params = {};
+                const urlParams = new URLSearchParams(url.split('?')[1]);
+                for (const [key, value] of urlParams) {
+                    params[key] = value;
+                }
+                return params;
+            }
+
+            // Function to send WhatsApp message
+            function sendMessage() {
+                const currentUrl = window.location.href;
+                const params = getParams(currentUrl);
+
+                // Extract parameters from URL
+                const urlApi = params['url-api'];
+                const phone = params['phone'];
+                const text = params['text'];
+                const apikey = params['apikey'];
+
+                // Construct the API URL
+                const apiUrl = `${urlApi}?phone=${phone}&text=${encodeURIComponent(text)}&apikey=${apikey}`;
+
+                // Use fetch API to send a GET request
+                fetch(apiUrl)
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data); // Log the response from the API
+
+                        // Check for success condition based on the actual API response
+                        if (data.toLowerCase().includes('success')) {
+                            alert('WhatsApp message sent successfully!');
+                        } else {
+                            alert('Failed to send WhatsApp message.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Failed to send WhatsApp message.');
+                    });
+            }
+
+            // Call sendMessage function on page load
+            sendMessage();
+        });
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,30 +80,17 @@
             max-width: 100px;
             height: auto;
         }
-        .subscription-form {
+        .subscription-body {
             padding: 20px;
+            text-align: center;
         }
-        .subscription-form label {
-            font-weight: bold;
-            display: block;
+        .subscription-body h1 {
+            font-size: 24px;
             margin-bottom: 10px;
         }
-        .subscription-form input[type="text"], .subscription-form input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+        .subscription-body p {
             font-size: 16px;
-        }
-        .subscription-form input[type="submit"] {
-            background-color: #007BFF;
-            color: #fff;
-            cursor: pointer;
-        }
-        .subscription-form input[type="submit"]:hover {
-            background-color: #0056b3;
+            line-height: 1.5;
         }
         .subscription-footer {
             text-align: center;
@@ -74,70 +110,34 @@
         <!-- Subscription Header with Logo -->
         <div class="subscription-header">
             <img src="https://via.placeholder.com/100x100.png?text=Logo" alt="Company Logo">
-            <h1>Subscribe to SMS News</h1>
+            <h1>Welcome to Our SMS News Service!</h1>
         </div>
 
-        <!-- Subscription Form -->
-        <div class="subscription-form">
-            <form id="subscribeForm">
-                <label for="phoneNumber">Phone Number:</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
-
-                <input type="submit" value="Subscribe">
-            </form>
+        <!-- Subscription Body -->
+        <div class="subscription-body">
+            <p>
+                We're excited to have you on board. Thank you for choosing our SMS news service. 
+                At [Company Name], we are committed to providing you with the latest updates and news.
+            </p>
+            <p>
+                To get started, please wait for our SMS updates. If you have any questions, feel free to contact us.
+            </p>
+            <p>
+                Best regards,<br>
+                The [Company Name] Team
+            </p>
         </div>
 
         <!-- Subscription Footer -->
         <div class="subscription-footer">
             <p>
-                By subscribing, you agree to receive SMS updates from [Company Name]. 
-                You can <a href="#">unsubscribe</a> at any time.
+                You're receiving this welcome message because you signed up for SMS updates from [Company Name]. If you didn't, 
+                please <a href="#">unsubscribe</a>.
             </p>
             <p>
                 &copy; 2024 [Company Name]. All rights reserved.
             </p>
         </div>
     </div>
-
-    <!-- Script to handle form submission and send SMS -->
-    <script>
-        $(document).ready(function() {
-            // Function to send SMS using API
-            function sendSMS(phoneNumber) {
-                const apiKey = 'your_api_key_here'; // Replace with your actual API key
-                const message = 'Welcome to our SMS news service!'; // Example message
-
-                // Construct the API URL
-                const apiUrl = `https://api.example.com/send-sms?phone=${phoneNumber}&message=${encodeURIComponent(message)}&apikey=${apiKey}`;
-
-                // Use fetch API to send a GET request (replace with appropriate method and API)
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data); // Log the response from the API
-                        if (data.success) {
-                            alert('SMS subscription successful!');
-                        } else {
-                            alert('Failed to subscribe to SMS news. Please try again.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Failed to subscribe to SMS news. Please try again.');
-                    });
-            }
-
-            // Handle form submission
-            $('#subscribeForm').submit(function(event) {
-                event.preventDefault();
-                const phoneNumber = $('#phoneNumber').val().trim();
-
-                // Validate phone number (add your validation logic here if needed)
-
-                // Send SMS if phone number is valid
-                sendSMS(phoneNumber);
-            });
-        });
-    </script>
 </body>
 </html>
