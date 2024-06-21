@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscribe to SMS News</title>
+    <title>SMS News Subscription</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script>
         $(document).ready(function() {
@@ -114,24 +114,9 @@
             <h1>Welcome to Our SMS News Service!</h1>
         </div>
 
-        <!-- Subscription Body -->
-        <div class="subscription-body">
-            <p>
-                We're excited to have you on board. Thank you for choosing our SMS news service. 
-                At [Company Name], we are committed to providing you with the latest updates and news.
-            </p>
-            <p>
-                To get started, please wait for our SMS updates. If you have any questions, feel free to contact us.
-            </p>
-            <p>
-                Best regards,<br>
-                The [Company Name] Team
-            </p>
-        </div>
-
         <!-- Subscription Footer -->
         <div class="subscription-footer">
-            <p>
+            <p id="subscriptionStatus">
                 You're currently subscribed to SMS updates from [Company Name]. If you wish to unsubscribe, 
                 <a href="#" id="unsubscribeLink">click here</a>.
             </p>
@@ -143,5 +128,6 @@
             </p>
         </div>
     </div>
+
 </body>
 </html>
