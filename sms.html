@@ -4,50 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send WhatsApp Message</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        input[type="text"] {
-            width: 300px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <h1>Send WhatsApp Message</h1>
-    <input type="text" id="phone_to" placeholder="Recipient's WhatsApp Number (+countrycode)" required><br>
-    <input type="text" id="message" placeholder="Message" required><br>
-    <button onclick="sendWhatsAppMessage()">Send Message</button>
 
     <script>
-        function sendWhatsAppMessage() {
-            const phone_to = document.getElementById('phone_to').value;
-            const message = document.getElementById('message').value;
-            
-            // Construct the WhatsApp API URL
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${encodeURIComponent(phone_to)}&text=${encodeURIComponent(message)}`;
-            
-            // Open WhatsApp URL in a new tab
-            window.open(whatsappUrl, '_blank');
-        }
+        $(document).ready(function() {
+            // Function to extract parameters from URL
+            function getParams(url) {
+                const params = {};
+                const urlParams = new URLSearchParams(url.split('?')[1]);
+                for (const [key, value] of urlParams) {
+                    params[key] = value;
+                }
+                return params;
+            }
+
+            // Function to send WhatsApp message
+            function sendMessage() {
+                const currentUrl = window.location.href;
+                const params = getParams(currentUrl);
+
+                // Extract parameters from URL
+                const urlApi = params['url-api'];
+                const phone = params['phone'];
+                const text = params['text'];
+                const apikey = params['apikey'];
+
+                // Construct the API URL
+                const apiUrl = `${urlApi}?phone=${phone}&text=${encodeURIComponent(text)}&apikey=${apikey}`;
+
+                // Use fetch API to send a GET request
+                fetch(apiUrl)
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data); // Log the response from the API
+                        if (data.toLowerCase().includes('sent')) {
+                            alert('WhatsApp message sent successfully!');
+                        } else {
+                            alert('Failed to send WhatsApp message.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Failed to send WhatsApp message.');
+                    });
+            }
+
+            // Call sendMessage function on page load
+            sendMessage();
+        });
     </script>
 </body>
 </html>
