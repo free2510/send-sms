@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMS News Subscription</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Unsubscribe from SMS News Service</title>
      <script>
         $(document).ready(function() {
             // Function to extract parameters from URL
@@ -61,73 +60,42 @@
             margin: 0;
             padding: 0;
             color: #333;
+            text-align: center;
         }
-        .subscription-container {
+        .unsubscribe-container {
             max-width: 600px;
             margin: 20px auto;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .subscription-header {
-            background-color: #007BFF;
-            color: #fff;
-            text-align: center;
             padding: 20px;
         }
-        .subscription-header img {
-            max-width: 100px;
-            height: auto;
-        }
-        .subscription-body {
-            padding: 20px;
-            text-align: center;
-        }
-        .subscription-body h1 {
+        h1 {
             font-size: 24px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
-        .subscription-body p {
-            font-size: 16px;
+        p {
+            font-size: 18px;
             line-height: 1.5;
         }
-        .subscription-footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-            color: #777;
-            background-color: #f9f9f9;
-        }
-        .subscription-footer a {
-            color: #007BFF;
-            text-decoration: none;
-            cursor: pointer;
+        .company-logo {
+            max-width: 100px;
+            height: auto;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="subscription-container">
-        <!-- Subscription Header with Logo -->
-        <div class="subscription-header">
-            <img src="https://via.placeholder.com/100x100.png?text=Logo" alt="Company Logo">
-            <h1>Welcome to Our SMS News Service!</h1>
-        </div>
-
-        <!-- Subscription Footer -->
-        <div class="subscription-footer">
-            <p id="subscriptionStatus">
-                You're currently subscribed to SMS updates from [Company Name]. If you wish to unsubscribe, 
-                <a href="#" id="unsubscribeLink">click here</a>.
-            </p>
-            <p id="unsubscribeConfirmation" style="display: none;">
-                You have successfully unsubscribed from SMS updates. We're sorry to see you go.
-            </p>
-            <p>
-                &copy; 2024 [Company Name]. All rights reserved.
-            </p>
-        </div>
+    <div class="unsubscribe-container">
+        <img src="https://via.placeholder.com/100x100.png?text=Logo" alt="Company Logo" class="company-logo">
+        <h1>You are now unsubscribed from our SMS News Service</h1>
+        <p>
+            Thank you for being with us. If you wish to resubscribe, please contact us.
+        </p>
+        <p>
+            Best regards,<br>
+            The [Company Name] Team
+        </p>
     </div>
-
 </body>
 </html>
