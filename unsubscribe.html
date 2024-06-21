@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscribe to SMS News</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
+     <script>
         $(document).ready(function() {
             // Function to extract parameters from URL
             function getParams(url) {
@@ -102,9 +102,6 @@
         .subscription-footer a {
             color: #007BFF;
             text-decoration: none;
-        }
-        .unsubscribe-link {
-            color: #dc3545;
             cursor: pointer;
         }
     </style>
@@ -135,35 +132,16 @@
         <!-- Subscription Footer -->
         <div class="subscription-footer">
             <p>
-                You're receiving this welcome message because you signed up for SMS updates from [Company Name]. If you'd like to <span class="unsubscribe-link">unsubscribe</span>, click here.
+                You're currently subscribed to SMS updates from [Company Name]. If you wish to unsubscribe, 
+                <a href="#" id="unsubscribeLink">click here</a>.
+            </p>
+            <p id="unsubscribeConfirmation" style="display: none;">
+                You have successfully unsubscribed from SMS updates. We're sorry to see you go.
             </p>
             <p>
                 &copy; 2024 [Company Name]. All rights reserved.
             </p>
         </div>
     </div>
-
-    <!-- Script to handle unsubscribe -->
-<!--     <script>
-        $(document).ready(function() {
-            // Function to simulate unsubscribe action (not actual server-side unsubscribe)
-            function unsubscribe() {
-                // Here you would typically send a request to your server to unsubscribe the user
-                // For simulation purposes, we'll just show a confirmation message
-                const confirmed = confirm('Are you sure you want to unsubscribe from SMS news?');
-                if (confirmed) {
-                    alert('You have been unsubscribed from SMS news.');
-                    // Optionally, redirect or update UI to reflect unsubscribed state
-                } else {
-                    // User cancelled
-                }
-            }
-
-            // Handle click on unsubscribe link
-            $('.unsubscribe-link').click(function() {
-                unsubscribe();
-            });
-        });
-    </script> -->
 </body>
 </html>
